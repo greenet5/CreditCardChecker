@@ -1,2 +1,2 @@
 # CreditCardChecker
-Codecademy CreditCardChecker Project
+Codecademy CreditCardChecker JavaScript Project
