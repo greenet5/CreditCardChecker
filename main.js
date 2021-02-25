@@ -19,95 +19,68 @@ const mystery3 = [6, 0, 1, 1, 3, 7, 7, 0, 2, 0, 9, 6, 2, 6, 5, 6, 2, 0, 3]
 const mystery4 = [4, 9, 2, 9, 8, 7, 7, 1, 6, 9, 2, 1, 7, 0, 9, 3]
 const mystery5 = [4, 9, 1, 3, 5, 4, 0, 4, 6, 3, 0, 7, 2, 5, 2, 3]
 
-const ellie = [4, 3, 6, 6, 1, 8, 2, 2, 6, 5, 8, 4, 7, 7, 5, 2]
-
 // An array of all the arrays above
 const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, invalid3, invalid4, invalid5, mystery1, mystery2, mystery3, mystery4, mystery5]
 
 
 // Add your functions below:
 
-function validateCred(arr) {
-    let spotNumber = 1;
-    let newArray = [];
-    let cardSum = 0;
-    for (var i = arr.length - 1; i >= 0; i--) {
-        if (spotNumber % 2 === 0) {
-            let addNum = arr[i] * 2;
-            if (addNum <= 9) {
-                newArray.unshift(addNum);
-            } else if (addNum > 9) {
-                addNum -= 9;
-                newArray.unshift(addNum);
-            }
+const validateCred = arr => {
+    let newArr = [];
+    for (let i = arr.length - 1; i >= 0; i--) {
+        if((arr.length - i) % 2 == 0) {
+        let temp = 0;
+        temp = arr[i] * 2;
+        if (temp > 9) {
+            temp -= 9;
         }
-        else if (spotNumber % 2 !== 0 ) {
-            newArray.unshift(arr[i]);
-        }
-        spotNumber ++;
+        newArr[i] = temp;
+    } else {
+        newArr[i] = arr[i];
     }
-    for (var i = 0; i < newArray.length; i++) {
-        cardSum += newArray[i];
     }
-    if (cardSum % 10 === 0) {
+    let sum = 0;
+    for (let j = 0; j < newArr.length; j++) {
+        sum += newArr[j];
+    }
+    if (sum % 10 == 0) {
         return true;
     } else {
         return false;
     }
 }
 
-function findInvalidCards(nestedArray) {
-    let newNested = [];
-    for (var i = 0; i < nestedArray.length; i++) {
-        if (validateCred(nestedArray[i]) === false) {
-            newNested.push(nestedArray[i]);
+const findInvalidCards = arr => {
+    let invalidCards = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (!validateCred(arr[i])) {
+            invalidCards.push(arr[i]);
         }
     }
-    return newNested;
+    return invalidCards;
 }
 
-function idInvalidCardCompanies(nestedArray) {
-    let invalidCompanies = [];
-    for (i = 0; i < nestedArray.length; i++) {
-        if (nestedArray[i][0] === 3) {
-            if (!invalidCompanies.includes('Amex')) {
-                invalidCompanies.push('Amex');
-            }
+const idInvalidCardCompanies = arr => {
+    let invalidCardCompanies = [];
+    for (let i = 0; i < arr.length; i++) {
+        let company = '';
+        if (arr[i][0] == 3) {
+            company = 'Amex';
+        } else if (arr[i][0] == 4) {
+            company = 'Visa';
+        } else if (arr[i][0] == 5) {
+            company = 'Mastercard';
+        } else if (arr[i][0] == 6) {
+            company = 'Discover';
         }
-        else if (nestedArray[i][0] === 4) {
-            if (!invalidCompanies.includes('Visa')) {
-                invalidCompanies.push('Visa');
-            }
-        }
-        else if (nestedArray[i][0] === 5) {
-            if (!invalidCompanies.includes('Mastercard')) {
-                invalidCompanies.push('Mastercard');
-            }
-        }
-        else if (nestedArray[i][0] === 6) {
-            if (!invalidCompanies.includes('Discover')) {
-                invalidCompanies.push('Discover');
-            }
-        }
-        else if (nestedArray[i][0] < 3 || nestedArray[i][0] > 6) {
-            console.log('Company not found!');
-        }
-        else {
-            console.log('There was an issue with your input! Please try again later!');
+        if (!invalidCardCompanies.includes(company)) {
+            invalidCardCompanies.push(company);
         }
     }
-    return invalidCompanies;
+    return invalidCardCompanies;
 }
 
-
-// console.log(validateCred(ellie));
-/*
-console.log(validateCred(valid1));
-console.log(validateCred(invalid1));
 console.log(findInvalidCards(batch));
-*/
-
-console.log(idInvalidCardCompanies(findInvalidCards(batch)));
 
 
 
